@@ -5,6 +5,9 @@ using namespace std;
 #include <fstream>
 #include <vector>
 #include <math.h>
+#include <cstdlib>
+#include <string>
+#include <time.h>
 //using std::vector
 //#include <lib.cpp>
 
@@ -20,24 +23,27 @@ int u0 = 0;           //initial condition
 int uend = u0;        //boundary condition
 
 ofstream myfile;
-myfile.open("valuesdifferentn.txt");   // File to save the values of u
-int n = 10;
-while (n < 1001)
-{    //Perform the same iterations for different values of n
-	myfile << "n =" << n << "\n";
+if (argc > 2){
+int N = atoi(argv[1]) ;
+myfile.open(argv[2]);   // File to save the values of u
+int n = N;
+clock_t start, finish;
+start = clock();
+
+	myfile << "\n n =" << n << "\n";
 	vector<double> a(n+1, -2);
 	vector<int> b(n, 1);
 	vector<int> c(n, 1);
 	vector<double> f_ (n+1);
 	vector<double> u (n+1); 
-	f_[0] = -100*exp(-10*x0);
-	double h = 1/(n +1);  //step length
+	double h = 1./(n + 1);  //step length
+	f_[0] = -100*pow(h, 2)*exp(-10*x0);
 	int i = 1;
 
 	//Forward substitution:
 	while (i < (n+1)){
 		double xi = i*h;
-		double fi = -100*exp(-10*xi);
+		double fi = -100*pow(h, 2)*exp(-10*xi);
 		double factor = c[i-1]/a[i-1];
 		a[i] = a[i] - b[i-1]*factor;
 		f_[i] = fi - f_[i-1]*factor;
@@ -56,14 +62,22 @@ while (n < 1001)
 		myfile << u[i] << "\n" ;
 		i -= 1;
 	}
-	
+	myfile << u[0] ;
 		
-	n = n*10;
-	}
 myfile.close();
 
 //linspace(x0, xend, n, x);
+finish = clock();
+cout << "N = " << N << endl;
+cout << "Time: " << (finish - start)/CLOCKS_PER_SEC << endl;
 return 0;
+
+
+}
+
+
+else{cout << "N = ?, filename = ?" << endl;
+return 1;}
 }
 
 
