@@ -22,7 +22,7 @@ int u0 = 0;           //initial condition
 int uend = u0;        //boundary condition
 int N = atoi(argv[1]);
 
-//MOnitoring the time usage of the substitution loops
+//Monitoring the time usage of the substitution loops
 clock_t start, finish;
 
 
@@ -33,8 +33,7 @@ int n = N;
 
 
 
-	myfile << "n =" << n;  // Writing the value of u we are using
-	//myfile << "\n u e\n" ;     // Declaring which values belong to the first and second column
+	myfile << "n = " << n;  // Writing the value of u we are using
 	vector<double> a(n+1, -2); //Vectors (see theory-part)
 	vector<double> f_ (n+1);
 	vector<double> u (n+1);
@@ -49,9 +48,9 @@ start = clock();
 	while (i < (n+1)){
 		double xi = i*h;
 		double fi = -100*pow(h, 2)*exp(-10*xi);
-		double factor = 1/a[i-1];
-		a[i] = a[i] - factor;
-		f_[i] = fi + f_[i-1]*factor;
+		//double factor = -1/a[i-1];
+		a[i] = -(i+1.)/i;
+		f_[i] = fi - f_[i-1]/double(a[i-1]);
 		i += 1;
 
 	}
@@ -60,18 +59,16 @@ cout << f_[n-1] << endl;
 	i = n-2;
 	u[n] = uend;
 	u[0] = u0;
-	u[n-1] = (f_[n-1] - uend)/a[n-1];
+	u[n-1] = (f_[n-1] - uend)/double(a[n-1]);
 	//e[n] = 0;
-	myfile << u[n] << "\n" ;//" " << e[n] <<"\n" ;
-	//e[n-1] = log(abs(u[n-1] - h*(n-1))) - log(h*(n-1));
+	myfile << u[n] << "\n" ;
 	myfile << u[n-1] << "\n";
 	while (i > 0){
-		u[i] = (f_[i] - u[i+1])/a[i];
+		u[i] = (f_[i] - u[i+1])/double(a[i]);
 		double xi = i*h;
-		myfile << u[i] <<"\n " ; // << "" << e[i] << "\n" ;
+		myfile << u[i] <<"\n " ; 
 		i -= 1;
 	}
-	//e[0] = 0;
 	myfile << u[0] << "\n" ;
 	
 myfile.close();
@@ -82,12 +79,11 @@ cout << "Time: " << (finish - start)/CLOCKS_PER_SEC << endl;
 
 
 //Deleting arrays, since we have all the information we need in the txt-files.
-/*
-e.clear();
+
 u.clear();
 f_.clear();
 a.clear();
-*/
+
 return 0;
 }
 

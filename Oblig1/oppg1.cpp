@@ -30,7 +30,7 @@ int n = N;
 clock_t start, finish;
 start = clock();
 
-	myfile << "\n n =" << n << "\n";
+	myfile << "\n n = " << n << "\n";
 	vector<double> a(n+1, -2);
 	vector<int> b(n, 1);
 	vector<int> c(n, 1);
