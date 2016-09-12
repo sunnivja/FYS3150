@@ -60,13 +60,12 @@ cout << f_[n-1] << endl;
 	u[n] = uend;
 	u[0] = u0;
 	u[n-1] = (f_[n-1] - uend)/double(a[n-1]);
-	//e[n] = 0;
 	myfile << u[n] << "\n" ;
 	myfile << u[n-1] << "\n";
 	while (i > 0){
 		u[i] = (f_[i] - u[i+1])/double(a[i]);
 		double xi = i*h;
-		myfile << u[i] <<"\n " ; 
+        myfile << u[i] <<"\n"; 
 		i -= 1;
 	}
 	myfile << u[0] << "\n" ;
@@ -75,7 +74,7 @@ myfile.close();
 
 finish = clock();
 cout << "N = " << N << endl;
-cout << "Time: " << (finish - start)/CLOCKS_PER_SEC << endl;
+cout << "Time: " << double(finish - start)/CLOCKS_PER_SEC << endl;
 
 
 //Deleting arrays, since we have all the information we need in the txt-files.

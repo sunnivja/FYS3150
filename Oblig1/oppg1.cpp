@@ -69,7 +69,7 @@ myfile.close();
 //linspace(x0, xend, n, x);
 finish = clock();
 cout << "N = " << N << endl;
-cout << "Time: " << (finish - start)/CLOCKS_PER_SEC << endl;
+cout << "Time: " << double(finish - start)/CLOCKS_PER_SEC << endl;
 return 0;
 
 

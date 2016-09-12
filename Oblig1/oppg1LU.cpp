@@ -54,11 +54,11 @@ int main(int argc, char const *argv[])
 	start = clock();
 	mat L, U;
 	lu(L, U, A);
-	finish = clock();
-	cout << (finish - start)/CLOCKS_PER_SEC << endl;
 
 	//Solving the linear equation Au = f
 	u = solve(A, f);
+	finish = clock();
+	cout << double(finish - start)/CLOCKS_PER_SEC << endl;
 	ofstream myfile;
 	myfile.open(argv[2]);
 	for(i=0;i<N;i++){
