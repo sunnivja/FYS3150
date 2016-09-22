@@ -18,14 +18,14 @@ def find_error(filename):
 	exact_sol = 1 - (1 - exp(-10))*x - exp(-10*x)
 	#print exact_sol
 	#error = log(abs(u - exact_sol)) - log(abs(exact_sol))
-	error = log10(abs(subtract(u, exact_sol)))#/exact_sol))
+	error = log10(abs(subtract(u, exact_sol))/exact_sol)
 	#print u.shape, error.shape, exact_sol.shape, x.shape
 	#print error
 	#print abs(u - exact_sol)/abs(exact_sol)
 	return error
 
-a = find_error("finderrors.txt");
-print max(a);
+a = find_error("maxerros.txt");
+print a
 
 
 
