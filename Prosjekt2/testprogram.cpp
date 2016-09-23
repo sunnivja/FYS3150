@@ -8,22 +8,37 @@
 
 using namespace arma;
 using namespace std;
-double* sort(double *v, int n, double** R);
+double* sort_2(double *v, int n, double** R);
 void test_highest_element(double** A, int n, double amax);
 //double* test_armadillo(double** A, int n);
 void test_orthogonality(double**A, int n);
 double mean(double*v, int n);
 void test_sort(double*v, int n);
+void run_all_tests();
 //double** conv_to_arma(double** A, int n);
-double** A = new double*[2];
+
+
+void run_all_tests(){
+	int i; int j;
+	double** A = new double*[2];
 for (i=0;i<2;i++){
 	A[i] = new double[2];
 }
-A[]
-
-void run_all_tests(double** A, int n, double amax){
-	test_orthogonality(A, n);
-	test_highest_element(A, n);
+for (i=0;i<2;i++){
+	for (j=0;j<2;j++){
+		if (j == i){
+			A[i][j] = 1;
+		}
+		else{
+			A[i][j] = 0;
+		}
+	}
+}
+A[1][2] = 1;
+int n = 2;
+double amax = 1;
+test_orthogonality(A, n);
+test_highest_element(A, n, amax);
 	return;
 }
 
@@ -69,7 +84,7 @@ void test_sort(double*v, int n){
 	}
 	double* v_sorted = new double[n];
 	int check = 0;
-	v_sorted = sort(v, n, R);
+	v_sorted = sort_2(v, n, R);
 	for (i=0;i<n-1;i++){
 		a = v_sorted[i] - v_sorted[i+1];
 		if (a < 0){
@@ -164,7 +179,7 @@ double** conv_to_arma(double**A, int n){
 */
 
 
-double* sort(double *v, int n, double** R){
+double* sort_2(double *v, int n, double** R){
 	double* v_sorted = new double[n];
 	double ** R_sorted = new double*[n];
 	int i = 0;

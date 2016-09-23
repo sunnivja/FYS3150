@@ -69,11 +69,8 @@ int main(int argc, char const *argv[])
 		}
 	}
 		
-		//cout << "Testing the Jacobi-method" << endl;
-		//test_orthogonality(A, n);
-		//test_highest_element(A, n, 1/pow(h, 2));
-	//print_matrix(A, n);
-		cout << "calling the Jacobi-function" << endl;
+	
+	cout << "calling the Jacobi-function" << endl;
 	jacobi_method(A, R, N);
 	double* eigenvalues = new double[N];
 	extract_diagonal(A, N, eigenvalues);
