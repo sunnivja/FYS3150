@@ -9,43 +9,43 @@
 using namespace arma;
 using namespace std;
 double* sort(double *v, int n, double** R);
-void test_highest_element(double** A, int n);
-double* test_armadillo(double** A, int n);
+void test_highest_element(double** A, int n, double amax);
+//double* test_armadillo(double** A, int n);
 void test_orthogonality(double**A, int n);
+double mean(double*v, int n);
+void test_sort(double*v, int n);
+//double** conv_to_arma(double** A, int n);
+double** A = new double*[2];
+for (i=0;i<2;i++){
+	A[i] = new double[2];
+}
+A[]
 
-
-
-int main(int argc, char const *argv[])
-{
-	int n = 5;
-	vector <double> A(n, n);
-	vector <double> R(n, n);
-	test_highest_element(A);
-	double* deviation = new[n];
-	deviation = test_armadillo(A, n);
-
-
-
-	return 0;
+void run_all_tests(double** A, int n, double amax){
+	test_orthogonality(A, n);
+	test_highest_element(A, n);
+	return;
 }
 
+
 void test_orthogonality(double** A, int n){
-	int i;int j;
+	int i;int j; int k;
 	//A has to be an orthogonal matrix!
-	double** eigvecs = new double[n];
+	double** eigvecs = new double*[n];
 	for (i=1;i<n;i++){
 		eigvecs[i] = new double[n];
 	}
 	jacobi_method(A, eigvecs, n);
 	//Calculating inner product:
-	//double* inner_products = new double[n];
 	double inner_product = 0;
-
+	double inner_product_ij;
 	//If the vectors are not orthogonal, the "inner product" will be much larger than zero
 	for (i=0;i<n;i++){
 		for (j=0; j<n; j++){
 			if (i != j){
-				inner_product_ij = inner_product(begin(eigvecs[i][0]), end(eigvecs[i][n]), begin(eigvecs[j][0]), end(eigvecs[j][n]), 0.0);
+				for (k=0;k=n;k++){
+					inner_product_ij += eigvecs[i][k]*eigvecs[j][k];
+				}
 				if (inner_product_ij < 1E-10){
 					inner_product_ij = 0;
 				}
@@ -56,23 +56,43 @@ void test_orthogonality(double** A, int n){
 		cout << "The Jacobi method preserves orthogonality" << endl;
 	}
 	else{
-		cout << "The Jacobi method does not preserve orthogonality :o :( :'( " endl;
+		cout << "The Jacobi method does not preserve orthogonality :o :( :'( " << endl;
 	}
 	return;
 }
 
-void test_sort(double*v, n){
-
+void test_sort(double*v, int n){
+	int i; double a;
+	double** R = new double*[n];
+	for (i=0;i<n;i++){
+		R[i] = new double[n];
+	}
+	double* v_sorted = new double[n];
+	int check = 0;
+	v_sorted = sort(v, n, R);
+	for (i=0;i<n-1;i++){
+		a = v_sorted[i] - v_sorted[i+1];
+		if (a < 0){
+			check += 0;
+		}
+		else{
+			check += 1;
+		}
+	}
+	if (check == 0){
+		cout << "The sorting function works! "<< endl;
+	}
+	else{
+		cout << "The sorting function does not work.." << endl;
+	}
 }
 
 
 
 
-void test_highest_element(double** A, int n){
-	amax = max(A(row(A)!=col(A)));
-	int k; int l;
-	n = (row(A)).size();
-	amax_jacobi = maxoffdiag(A, k, l, n);
+void test_highest_element(double** A, int n, double amax){
+	int *k; int *l;
+	double amax_jacobi = maxoffdiag(A, k, l, n);
 	if (abs(amax - amax_jacobi) < 1E-8){
 		cout << "Maxoffdiag works" << endl;
 	}
@@ -82,34 +102,67 @@ void test_highest_element(double** A, int n){
 	return;
 }
 
-
+/*
 double* test_armadillo(double** A, int n){
 	double** eigvec = new double*[n];
 	double* eigval = new double[n];
+	double* v = new double[n];
+	double** eigvec_jacobi = new double*[n];
+	double* deviation = new double[n];
+	int i; int j;
+
+
 	for (i=0;i<n;i++){
 		eigvec[n] = new double[n];
 	}
-	eigvec, eigval = eigs_gen(A, n);
-
-	double** eigvec_jacobi = new double*[n];
-
 	for (i=0;i<n;i++){
 		eigvec_jacobi[n] = new double[n];
+	}
+
+	mat A_arma = zeros<mat>(n, n);
+	for (i=0;i<n;i++){
+		for (j=0;j<n;j++){
+		A_arma[i, j] = A[i][j];
+	}
+	}
+
 	jacobi_method(A, eigvec_jacobi, n);
-	double* v = new double[n];
-	double* deviation = new double[n];
-	double*dev = new double[n];
+	eigvec, eigval = eigs_gen(A_arma);
 	sort(v, n, eigvec_jacobi);
 	for (i=1;i<n;i++){
+		double*dev = new double[n];
 		for (j=1;j<n;j++){
 			dev[j] = abs(eigvec_jacobi[i][j] - eigvec[i][j]);
-		deviation[i] = mean(dev);
+		deviation[i] = mean(dev, n);
 		}
 	}
 
 
 	return deviation;
 }
+*/
+
+double mean(double*v, int n){
+	int i;
+	double sum = 0;
+	for (i=0;i<n;i++){
+		sum += v[i];
+	}
+	return sum/double(n);
+}
+
+/*
+double** conv_to_arma(double**A, int n){
+	mat A_arma = zeros<mat>(n, n);
+	for (i=0;i<n;i++){
+		for (j=0;j<n;j++){
+		A_arma[i][j] = A[i][j];
+	}
+	}
+	return A_arma;
+}
+*/
+
 
 double* sort(double *v, int n, double** R){
 	double* v_sorted = new double[n];
@@ -141,8 +194,7 @@ double* sort(double *v, int n, double** R){
 	}
 	//v = v_sorted;
 	R = R_sorted;
-	return v_sorted;
-}
+	return v_sorted;}
 
 
 

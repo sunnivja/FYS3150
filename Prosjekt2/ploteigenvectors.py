@@ -15,3 +15,5 @@ def plot(filename):
 			for j in range(length(lines)):
 				R[i, j] = float(lines[j])
 	#plot(R[1, :])
+
+plot(filename)

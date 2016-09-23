@@ -6,6 +6,9 @@
 #include <math.h>
 #include <cmath>
 #include <fstream>
+#include "testprogram.h"
+#include <cstdlib>
+#include <string>
 
 using namespace std;
 void print_matrix(double** A, int n);
@@ -16,7 +19,7 @@ double* sort(double *v, int n, double** R);
 
 int main(int argc, char const *argv[])
 {
-	int n = 10;
+	int n = atoi(argv[3]);
 	int N = n;
 	double rho_0 = 0;
 	double rho_max = 5;
@@ -40,12 +43,14 @@ int main(int argc, char const *argv[])
 			if (j == i){
 				//cout << "j = i" << endl;
 				rho = i*h;
-				if (atoi(argv[2]) == 0){
-					A[i][j] = 2/pow(h, 2) + rho*rho;}//rho*rho*omega_r*omega_r + 1.0/rho;}
+				int a = atoi(argv[2]);
+				if (a == 0){
+					A[i][j] = 2/pow(h, 2) + rho*rho;
+					}
 				else{
 					A[i][j] = 2/pow(h, 2) + rho*rho*omega_r*omega_r + 1.0/rho;}
 				}
-			}
+			
 			else if (j == i+1){
 				//cout << "j = i+1" << endl;
 				A[j][i] = 1/pow(h, 2);
@@ -61,8 +66,12 @@ int main(int argc, char const *argv[])
 				//cout << "the rest is 0   " << i<< ", " << j << endl;
 				A[i][j] = 0;
 			}
-			}
 		}
+	}
+		
+		//cout << "Testing the Jacobi-method" << endl;
+		//test_orthogonality(A, n);
+		//test_highest_element(A, n, 1/pow(h, 2));
 	//print_matrix(A, n);
 		cout << "calling the Jacobi-function" << endl;
 	jacobi_method(A, R, N);
@@ -72,8 +81,8 @@ int main(int argc, char const *argv[])
 	eigenvalues_sorted = sort(eigenvalues, N, R);
 	cout << eigenvalues_sorted[1] << " " << eigenvalues_sorted[2] << " "<< eigenvalues_sorted[3] << endl;
 	print_vector(R[0], n);
-	
-
+	/*
+	int i;int j;
 	ofstream myfile;
 	myfile.open(argv[1]);
 	myfile << "n = " << n << "\n";
@@ -86,6 +95,7 @@ int main(int argc, char const *argv[])
 		}
 	}
 	myfile.close();
+	*/
 
 
 
