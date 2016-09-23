@@ -5,9 +5,13 @@
 #include "jacobi.h"
 #include <math.h>
 #include <cmath>
+#include <fstream>
 
 using namespace std;
 void print_matrix(double** A, int n);
+void print_vector(double*v, int n);
+void extract_diagonal(double** A, int n, double* v);
+double* sort(double *v, int n, double** R);
 
 
 int main(int argc, char const *argv[])
@@ -15,16 +19,11 @@ int main(int argc, char const *argv[])
 	int n = 10;
 	int N = n;
 	double rho_0 = 0;
-	double rho_max = 10;
+	double rho_max = 5;
 	double h = (rho_max - rho_0)/(N+1.0);
 	int i = 0; int j = 0;
-	double Beta_e = 1.44; //nmeV
-	double hbar = 197.1; //nmeV/c^2
-	double m_e = 1; 
-	double alpha = pow(hbar, 2)/(m_e*Beta_e);
-	double k = 1;
-	double omega_r = 0.25*m_e*k*pow(alpha, 4)/pow(hbar, 2);
 	double rho; 
+	double omega_r = 0.25;
 
 
 
@@ -41,24 +40,57 @@ int main(int argc, char const *argv[])
 			if (j == i){
 				//cout << "j = i" << endl;
 				rho = i*h;
-				//For the interacting case: rho = omega_r^2*rho^2 + 1/rho
-				A[i][j] = 2/pow(h, 2) + pow(rho, 2);
+				if (atoi(argv[2]) == 0){
+					A[i][j] = 2/pow(h, 2) + rho*rho;}//rho*rho*omega_r*omega_r + 1.0/rho;}
+				else{
+					A[i][j] = 2/pow(h, 2) + rho*rho*omega_r*omega_r + 1.0/rho;}
+				}
 			}
 			else if (j == i+1){
 				//cout << "j = i+1" << endl;
 				A[j][i] = 1/pow(h, 2);
-				A[i][j] = 1/pow(h, 2);}
+				A[i][j] = 1/pow(h, 2);
+			}
+			else if (j == i-1){
+				//cout << "j = i+1" << endl;
+				A[j][i] = 1/pow(h, 2);
+				A[i][j] = 1/pow(h, 2);
+			}
 			
 			else{
-				//cout << "the rest is 0" << endl;
+				//cout << "the rest is 0   " << i<< ", " << j << endl;
 				A[i][j] = 0;
 			}
 			}
 		}
-
+	//print_matrix(A, n);
 		cout << "calling the Jacobi-function" << endl;
 	jacobi_method(A, R, N);
-	cout << A[0][0] << " " << A[1][1] << " "<< A[2][2] << endl;
+	double* eigenvalues = new double[N];
+	extract_diagonal(A, N, eigenvalues);
+	double* eigenvalues_sorted = new double[N];
+	eigenvalues_sorted = sort(eigenvalues, N, R);
+	cout << eigenvalues_sorted[1] << " " << eigenvalues_sorted[2] << " "<< eigenvalues_sorted[3] << endl;
+	print_vector(R[0], n);
+	
+
+	ofstream myfile;
+	myfile.open(argv[1]);
+	myfile << "n = " << n << "\n";
+	for (i=0;i<n;i++){
+		for (j=0;j<n;j++){
+			myfile << R[i][j] << " " ;
+			if (j == n){
+				myfile << "" << endl ;
+			}
+		}
+	}
+	myfile.close();
+
+
+
+
+
 	//print_matrix(A, n);
 
 		return 0;
@@ -67,11 +99,15 @@ int main(int argc, char const *argv[])
 
 void print_matrix(double** A, int n){
 	int i; int j;
-	for (i=0;i<n+1;i++){
-		for (j=0; j<n+1; j++){
-			cout << A[i][j] << " ";
-			if (j == n){
-				cout << "" << endl;
+	for (i=0;i<n;i++){
+		for (j=0; j<n; j++){
+			if (fabs(A[i][j]) < 1e-8) {
+				cout <<"0" << " ";
+			} else {
+				cout << A[i][j] << " ";
+			}
+			if (j == n-1){
+				cout << " " << endl;
 
 			}
 		}
@@ -80,3 +116,73 @@ void print_matrix(double** A, int n){
 
 	return;
 }
+
+void print_vector(double*v, int n){
+	int i;
+	for (i=0;i<n;i++){
+		if (fabs(v[i] < 1e-8)){
+			cout << "0" << endl;
+		}
+	cout << v[i] << endl;
+	}
+	return;
+}
+
+
+
+
+
+
+void extract_diagonal(double** A, int n, double* v){
+	//double v = new[n];
+	int i = 0;
+	for (i=0;i<n;i++){
+		v[i] = A[i][i];
+	}
+	return;
+}
+
+
+double* sort(double *v, int n, double** R){
+	double* v_sorted = new double[n];
+	double ** R_sorted = new double*[n];
+	int i = 0;
+	for (i=0;i<n;i++){
+		R_sorted[i] = new double[n];
+	}
+	int j = 0;
+	for (i=0;i<n+1;i++){
+		double a1 = 0;
+		double a2 = 0;
+		double amax = 0;
+		int max_no = 0;
+		//int count = 0; 
+		for(j=0;j<n;j++){
+			if (v[j] > amax){
+				amax = v[j];
+				max_no = j;
+				//cout << v[j] << endl;
+				//count++;
+			}
+		}
+		v[max_no] = 0;
+		v_sorted[n-i] = amax;
+		R_sorted[n-i] = R[max_no]; 
+
+		//cout << v_sorted[n-i] << endl;
+	}
+	//v = v_sorted;
+	R = R_sorted;
+	return v_sorted;
+}
+
+
+/*
+amax = 0;
+for i=1..n
+	if v[i]>amax :
+		amax = v[i];
+		index = i;
+
+v[index] = 0;
+*/
