@@ -7,6 +7,6 @@ void test_highest_element(double** A, int n, double amax);
 void test_orthogonality(double**A, int n);
 double mean(double*v, int n);
 void test_sort(double*v, int n);
-void run_all_tests();
+void run_all_tests(int a);
 //double** conv_to_arma(double** A, int n);
 #endif

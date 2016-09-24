@@ -16,8 +16,10 @@ void rotate ( double ** A, double ** R, int k, int l, int n );
 void jacobi_method ( double ** A, double ** R, int n ){
 // Setting up the eigenvector matrix
 	std::cout << "setting up R" << endl;
- for ( int i = 0; i < n; i++ ) {
+ for (int i = 0; i < n; i++ ) {
+ 	std::cout << "check i \n";
   for ( int j = 0; j < n; j++ ) { 
+  		std::cout << "check j \n" ; 
   	if ( i == j ) { 
   		R[i][j] = 1.0;
   		 } 
@@ -25,7 +27,7 @@ void jacobi_method ( double ** A, double ** R, int n ){
   	 } 
   	} 
   }
-
+std::cout << "check 1" << endl;
 int k, l; 
 double epsilon = 1.0e-8; 
 double max_number_iterations = (double) n * (double) n * (double) n; 

@@ -21,7 +21,7 @@ print "One electron"
 
 run_cmd("g++ -o %s.out %s.cpp %s.cpp %s.cpp" %(fname, fname, header1, header2))
 
-run_cmd("./%s.out %s %s %s" %(fname, filename, noelec2, N))
+run_cmd("./%s.out %s %s %s" %(fname, filename, noelec1, N))
 
 #run_cmd("python %s %s" %(plotprogram, filename))
 

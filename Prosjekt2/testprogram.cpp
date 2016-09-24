@@ -14,18 +14,19 @@ void test_highest_element(double** A, int n, double amax);
 void test_orthogonality(double**A, int n);
 double mean(double*v, int n);
 void test_sort(double*v, int n);
-void run_all_tests();
+void run_all_tests(int a);
 //double** conv_to_arma(double** A, int n);
 
 
-void run_all_tests(){
+void run_all_tests(int a){
 	int i; int j;
-	double** A = new double*[2];
-for (i=0;i<2;i++){
-	A[i] = new double[2];
+	int n = 5;
+	double** A = new double*[n];
+for (i=0;i<n;i++){
+	A[i] = new double[n];
 }
-for (i=0;i<2;i++){
-	for (j=0;j<2;j++){
+for (i=0;i<n;i++){
+	for (j=0;j<n;j++){
 		if (j == i){
 			A[i][j] = 1;
 		}
@@ -34,8 +35,7 @@ for (i=0;i<2;i++){
 		}
 	}
 }
-A[1][2] = 1;
-int n = 2;
+A[1][n] = 1;
 double amax = 1;
 test_orthogonality(A, n);
 test_highest_element(A, n, amax);
