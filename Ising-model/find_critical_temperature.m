@@ -14,3 +14,4 @@ a = a/3
 
 T_c_limit = mean(-a.*L.^(-1)+ T_c)
 error = T_c_analytical - T_c_limit
+uncertainty = abs(mean(T_c) - T_c_analytical)
