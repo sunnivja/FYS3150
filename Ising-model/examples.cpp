@@ -12,7 +12,9 @@ Examples::Examples()
 
 }
 
-double Examples::Random_spins2D(int N, int n, double T, double& exp_energy_squared, double& magnetic_moment, double& magnetic_moment_squared, int init){
+void Examples::Random_spins2D(int N, int n, double T, double& exp_energy_squared, double& magnetic_moment, double& magnetic_moment_squared, int init){
+    //Initialises the calculations for a two-dimensional spin lattice with N elements in each direction.
+
     int i; int j; int k; int s;
     Isingmodel ising;
 
@@ -22,7 +24,6 @@ double Examples::Random_spins2D(int N, int n, double T, double& exp_energy_squar
     double sum_energies = 0;
 
     double* energies = new double[n];
-    //double* magnetic_moment = new double[n];
     double* probability = new double[n];
 
     double** spins = new double*[N];
@@ -36,15 +37,12 @@ double Examples::Random_spins2D(int N, int n, double T, double& exp_energy_squar
             for (j=0;j<N;j++){
                 //srand(time(NULL));
                 double a = rand()/double(RAND_MAX);
-                if (a > 0.5){
+                if (a >= 0.5){
                     spins[i][j] = 1;
-                    //cout << spins[i][j] << endl;
                 }
                 else{
-                    spins[i][j] = -1;
-                    //cout << spins[i][j] << endl;
+                    spins[i][j] = -1;  
                 }
-                //magnetic_moment[s] += spins[i][j]/double(N*N);
             }
         }
         }
@@ -55,49 +53,16 @@ double Examples::Random_spins2D(int N, int n, double T, double& exp_energy_squar
                 }
             }
     }
-        //Calculate the energy for each system:
         Isingmodel isingmodel;
-        energies[s] = isingmodel.Energy(spins, N)/double(N*N);
-        sum_energies += isingmodel.Energy(spins, N)/double(N*N);
-        Z += exp(-beta*energies[s]);
 
-       // cout << energies[s] << endl;
-        //magnetic_moment[s] = Isingmodel::Magnetic_moment(spins, N);
 
     }
-   // cout << "Z = " << Z << endl;
-    //double partition_function = Isingmodel.Partition_function(N, energies, T);
     Isingmodel isingmodel;
 
     double expectation_energy = isingmodel.Exp_values(N, spins, T, n, exp_energy_squared, magnetic_moment, magnetic_moment_squared);
 
-    //cout << "Expected value: " << expectation_energy << endl;
-    //cout << "Mean value: " << sum_energies/n << endl;
-    //double expectation_magnetic_moment = isingmodel.Exp_value_squared(N, magnetic_moment, Z, energies, T, n);
-    for (int i=1;i<n;i++){
-        probability[i] = energies[i]/Z;
-    }
 
 
-
-return expectation_energy;
-}
-
-void Examples::Random_spins3D(int N, double*** spins){
-    int i; int j; int k;
-    for (i=0;i<N;i++){
-        for (j=0;j<N;j++){
-            for (k=0;k<N;k++){
-                double a = rand() % 1;
-                if (a < 0.5){
-                    spins[i][j][k] == -1;
-                }
-                else{
-                    spins[i][j][k] == 1;
-                }
-
-            }
-        }
-}
 return ;
 }
+

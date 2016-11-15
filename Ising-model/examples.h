@@ -8,8 +8,7 @@ class Examples
 {
 public:
     Examples();
-    double Random_spins2D(int N, int n, double T, double &exp_energy_squared, double &magnetic_moment, double &magnetic_moment_squared, int init);
-    void Random_spins3D(int N, double*** spins);
+    void Random_spins2D(int N, int n, double T, double &exp_energy_squared, double &magnetic_moment, double &magnetic_moment_squared, int init);
 };
 
 #endif // EXAMPLES_H
